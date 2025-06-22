@@ -19,11 +19,11 @@ export const create = mutation({
     orgId: v.string(),
     title: v.string(),
   },
-  handler: async (context, args) => {
-    const identity = await context.auth.getUserIdentity();
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unathorized");
     const randomImage = images[Math.floor(Math.random() * images.length)];
-    const board = await context.db.insert("boards", {
+    const board = await ctx.db.insert("boards", {
       orgId: args.orgId,
       title: args.title,
       autherId: identity.subject,
@@ -36,18 +36,18 @@ export const create = mutation({
 
 export const remove = mutation({
   args: { id: v.id("boards") },
-  handler: async (context, args) => {
-    const identity = await context.auth.getUserIdentity();
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
     // TODO: letter check to delete favorite realation as well
-    await context.db.delete(args.id);
+    await ctx.db.delete(args.id);
   },
 });
 
 export const update = mutation({
   args: { id: v.id("boards"), title: v.string() },
-  handler: async (context, args) => {
-    const identity = await context.auth.getUserIdentity();
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
     if (!identity) throw new Error("Unauthorized");
     const title = args.title.trim();
 
@@ -56,9 +56,64 @@ export const update = mutation({
     if (title.length > 60)
       throw new Error("Title length can not be more then 60 character");
 
-    const board = await context.db.patch(args.id, {
+    const board = await ctx.db.patch(args.id, {
       title: args.title,
     });
+    return board;
+  },
+});
+
+export const favorite = mutation({
+  args: { id: v.id("boards"), orgId: v.string() },
+
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorize");
+
+    const board = await ctx.db.get(args.id);
+    if (!board) throw new Error("Board does not exits");
+    const userId = identity.subject;
+
+    const existingFavorite = await ctx.db
+      .query("userFavorites")
+      .withIndex("by_user_board_org", (q) =>
+        q.eq("userId", userId).eq("boardId", board._id).eq("orgId", args.orgId)
+      )
+      .first();
+
+    if (existingFavorite) throw new Error("Board alredy favorited");
+
+    await ctx.db.insert("userFavorites", {
+      userId,
+      boardId: board._id,
+      orgId: args.orgId,
+    });
+    return board;
+  },
+});
+
+export const unfavorite = mutation({
+  args: { id: v.id("boards") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+    if (!identity) throw new Error("Unauthorize");
+
+    const board = await ctx.db.get(args.id);
+    if (!board) throw new Error("Board does not exits");
+    const userId = identity.subject;
+
+    const existingFavorite = await ctx.db
+      .query("userFavorites")
+      .withIndex(
+        "by_user_board",
+        (q) => q.eq("userId", userId).eq("boardId", board._id)
+        // TODO: Check if orgId needed
+      )
+      .unique();
+
+    if (!existingFavorite) throw new Error("Favorited board not found");
+
+    await ctx.db.delete(existingFavorite._id);
     return board;
   },
 });
