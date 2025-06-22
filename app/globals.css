@@ -3,8 +3,10 @@
 
 html,
 body,
+#__next,
 :root {
   height: 100%;
+  box-sizing: border-box;
 }
 @custom-variant dark (&:is(.dark *));
 
