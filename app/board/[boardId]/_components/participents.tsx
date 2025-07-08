@@ -18,9 +18,6 @@ export const Participents = () => {
     >
       <div className="flex gap-x-2">
         {users.slice(0, MAX_SHOWN_USERS).map(({ connectionId, info }) => {
-          {
-            console.log("connectionId", connectionId, info);
-          }
           return (
             <UserAvatar
               borderColor={connectionIdToColor(connectionId)}
