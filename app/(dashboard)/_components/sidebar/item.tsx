@@ -18,8 +18,11 @@ export const Item = ({ id, name, imageUrl }: ItemPros) => {
   const onClick = () => {
     if (!setActive) return;
 
-    setActive({ organization: id });
+    setActive({
+      organization: id,
+    });
   };
+
   return (
     <div className="aspect-square relative">
       <Hint label={name} side="right" align="start" sideOffset={18}>
