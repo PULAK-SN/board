@@ -25,6 +25,7 @@ import {
 } from "@liveblocks/react";
 import { LiveObject } from "@liveblocks/node";
 import { LayerPreview } from "./layer-preview";
+import { SelectionBox } from "./selection-box";
 const MAX_LAYERS = 100;
 
 interface CanvasProps {
@@ -175,6 +176,8 @@ export const Canvas = ({ boardId }: CanvasProps) => {
               selectionColor={layerIdsToColorSelection[layerId]}
             />
           ))}
+
+          <SelectionBox onResizeHandelPointerDown={() => {}} />
           <CursorPresence />
         </g>
       </svg>
