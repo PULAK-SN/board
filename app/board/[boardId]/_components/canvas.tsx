@@ -5,7 +5,11 @@ import { Info } from "./info";
 import { Toolbar } from "./toolbar";
 import { Participents } from "./participents";
 import { CursorPresence } from "./cursor-presence";
-import { connectionIdToColor, pointerEventToCanvasPoint } from "@/lib/utils";
+import {
+  connectionIdToColor,
+  pointerEventToCanvasPoint,
+  resizeBounds,
+} from "@/lib/utils";
 import { nanoid } from "nanoid";
 import {
   Camera,
@@ -14,6 +18,8 @@ import {
   Color,
   LayerType,
   Point,
+  Side,
+  XYWH,
 } from "@/types/canvas";
 import {
   useHistory,
@@ -81,6 +87,37 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     [lastUsedColor]
   );
 
+  const resizeSelectedLayer = useMutation(
+    ({ storage, self }, point: Point) => {
+      if (canvasState.mode !== CanvasMode.Resizing) return;
+
+      const bounds = resizeBounds(
+        canvasState.initialBounds,
+        canvasState.corner,
+        point
+      );
+
+      const liveLayers = storage.get("layers");
+      const layer = liveLayers.get(self.presence.selection[0]);
+      if (layer) layer.update(bounds);
+    },
+    [canvasState]
+  );
+
+  const onResizeHandelPointerDown = useCallback(
+    (corner: Side, initialBounds: XYWH) => {
+      // console.log({ corner: corner, initialBounds: initialBounds });
+
+      history.pause();
+      setCanvasState({
+        mode: CanvasMode.Resizing,
+        initialBounds,
+        corner,
+      });
+    },
+    [history]
+  );
+
   const onWheel = useCallback(
     (e: React.WheelEvent) => {
       setCamera({
@@ -95,9 +132,12 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     ({ setMyPresence }, e: React.PointerEvent) => {
       e.preventDefault();
       const current = pointerEventToCanvasPoint(e, camera);
+      if (canvasState.mode === CanvasMode.Resizing) {
+        resizeSelectedLayer(current);
+      }
       setMyPresence({ cursor: current });
     },
-    []
+    [camera, canvasState, resizeSelectedLayer]
   );
 
   const onPointerLeave = useMutation(({ setMyPresence }) => {
@@ -177,7 +217,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
             />
           ))}
 
-          <SelectionBox onResizeHandelPointerDown={() => {}} />
+          <SelectionBox onResizeHandelPointerDown={onResizeHandelPointerDown} />
           <CursorPresence />
         </g>
       </svg>
