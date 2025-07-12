@@ -1,7 +1,7 @@
 import { colorToCss } from "@/lib/utils";
 import { RectangleLayer } from "@/types/canvas";
 
-interface RectanglerProps {
+interface RectangleProps {
   id: string;
   layer: RectangleLayer;
   onPointerDown: (e: React.PointerEvent, id: string) => void;
@@ -13,7 +13,7 @@ export const Rectangle = ({
   layer,
   onPointerDown,
   selectionColor,
-}: RectanglerProps) => {
+}: RectangleProps) => {
   const { x, y, width, height, fill } = layer;
 
   return (
