@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Info } from "./info";
 import { Toolbar } from "./toolbar";
 import { Participents } from "./participents";
@@ -38,6 +38,7 @@ import { LayerPreview } from "./layer-preview";
 import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
 import { Path } from "./path";
+import { useDeleteLayers } from "@/hooks/use-delete-layers";
 
 const MAX_LAYERS = 100;
 
@@ -368,6 +369,29 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     }
     return layerIdsToColorSelection;
   }, [selections]);
+
+  const deleteLayers = useDeleteLayers();
+
+  useEffect(() => {
+    const onKeyDown = (e: KeyboardEvent) => {
+      switch (e.key.toLowerCase()) {
+        case "delete": {
+          deleteLayers();
+          break;
+        }
+        case "z": {
+          if (e.ctrlKey || e.metaKey) {
+            if (e.shiftKey) history.redo();
+            else history.undo();
+          }
+          break;
+        }
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  }, [history, deleteLayers]);
   return (
     <main className="h-full w-full relative bg-neutral-100 touch-none">
       <Info boardId={boardId} />
@@ -412,7 +436,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
               />
             )}
           <CursorPresence />
-          {/* for myself -check on real time not after on-pointer-up */}
+          {/* for myself -drawing on real time not after on-pointer-up */}
           {pencilDraft != null && pencilDraft.length > 0 && (
             <Path
               points={pencilDraft}

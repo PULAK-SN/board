@@ -35,14 +35,15 @@ const Drafts = () => {
     <>
       {others.map(([Key, other]) => {
         if (other.pencilDraft) {
-          console.log({ key: Key, other: other });
-          <Path
-            key={Key}
-            x={0}
-            y={0}
-            points={other.pencilDraft}
-            fill={other.penColor ? colorToCss(other.penColor) : "#000"}
-          />;
+          return (
+            <Path
+              key={Key}
+              x={0}
+              y={0}
+              points={other.pencilDraft}
+              fill={other.penColor ? colorToCss(other.penColor) : "#000"}
+            />
+          );
         }
         return null;
       })}
@@ -53,6 +54,7 @@ const Drafts = () => {
 export const CursorPresence = memo(() => {
   return (
     <>
+      {/* see others drawing on real time*/}
       <Drafts />
       <Cursors />
     </>
