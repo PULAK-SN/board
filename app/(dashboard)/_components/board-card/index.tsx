@@ -59,7 +59,13 @@ export const BoardCard = ({
       justify-between overflow-hidden"
       >
         <div className="relative flex-1 bg-amber-50">
-          <Image alt={title} src={imageUrl} fill className="object-contain" />
+          <Image
+            alt={title}
+            src={imageUrl}
+            fill
+            // sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-contain"
+          />
           <Overlay />
           <Actions id={id} title={title} side="right">
             <button
