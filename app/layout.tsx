@@ -32,6 +32,7 @@ export default function RootLayout({
       >
         <ConvexClientProvider>
           <Toaster />
+
           <ModelProvider />
           {children}
         </ConvexClientProvider>
