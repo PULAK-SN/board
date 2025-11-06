@@ -4,7 +4,7 @@ Developed a real-time collaborative whiteboard application using **Next.js 15 + 
 allows teams to draw, create sticky notes, and collaborate visually with secure authentication and instant update.
 
 🚀 **Live Demo:** [Collaborative White Broad.vercel.app](https://board-phi-five.vercel.app/)  
-🧑‍💻 **Author:** [Pulak Sen](ttps://github.com/PULAK-SN/)
+🧑‍💻 **Author:** [Pulak Sen](https://github.com/PULAK-SN/)
 
 ## 🖼️ Screenshots
 
