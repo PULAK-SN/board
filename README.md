@@ -1,3 +1,37 @@
+# 🏫 Collaborative White Broad
+
+Developed a real-time collaborative whiteboard application using **Next.js 15 + Clerk + Convex**. The platform
+allows teams to draw, create sticky notes, and collaborate visually with secure authentication and instant update.
+
+🚀 **Live Demo:** [Collaborative White Broad.vercel.app](https://board-phi-five.vercel.app/)  
+🧑‍💻 **Author:** [Pulak Sen](ttps://github.com/PULAK-SN/)
+
+## 🖼️ Screenshots
+
+### Log-in Page
+
+<p align="center">
+  <img src="./public/ss/login-page.png" alt="Log in page Screenshot">
+</p>
+
+### Home Page
+
+<p align="center">
+  <img src="./public/ss/home-page.png" alt="Home page Screenshot">
+</p>
+
+### White Board
+
+<p align="center">
+  <img src="./public/ss/borad.png" alt="White board Screenshot">
+</p>
+
+### Invite Dialog from Clerk
+
+<p align="center">
+  <img src="./public/ss/invite.png" alt="Invite Dialog Screenshot">
+</p>
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
