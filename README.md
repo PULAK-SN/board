@@ -1,6 +1,6 @@
 # 🏫 Collaborative White Broad
 
-Developed a real-time collaborative whiteboard application using **Next.js 15 + Clerk + Convex**. The platform
+Developed a real-time collaborative whiteboard application using **Next.js 15 + Clerk + Convex + Liveblocks**. The platform
 allows teams to draw, create sticky notes, and collaborate visually with secure authentication and instant update.
 
 🚀 **Live Demo:** [Collaborative White Broad.vercel.app](https://board-phi-five.vercel.app/)  
