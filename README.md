@@ -23,7 +23,7 @@ allows teams to draw, create sticky notes, and collaborate visually with secure 
 ### White Board
 
 <p align="center">
-  <img src="./public/ss/borad.png" alt="White board Screenshot">
+  <img src="./public/ss/board.png" alt="White board Screenshot">
 </p>
 
 ### Invite Dialog from Clerk
